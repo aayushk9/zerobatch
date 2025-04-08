@@ -7,21 +7,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Founder {
-  id          String  @id @default(uuid())
-  username    String
-  email       String  @unique
-  password    String
-  startups    Startup[]
+model User {
+  id              String  @id @default(uuid())
+  name            String?
+  email           String?  @unique
+  emailVerified   DateTime?
+  startups        Startup[]
+  accounts        Account[]
+  sessions        Session[]
+  createdAt       DateTime  @default(now())
 }
 
 model Startup {
-  id          String  @id @default(uuid())
-  founderId   String
-  founder     Founder @relation(fields: [founderId], references: [id])
-  startupName String
-  slug        String  @unique
-  user        BetaUser[]
+  id              String  @id @default(uuid())
+  userId          String
+  User            User @relation(fields: [userId], references: [id])
+  startupName     String
+  slug            String  @unique
+  betaUsers            BetaUser[]
 }
 
 model BetaUser {
@@ -32,4 +35,36 @@ model BetaUser {
    submittedAt     DateTime @default(now())
    startup         Startup @relation(fields:[startupId], references:[id])
    startupId       String
+}
+
+model Account {
+   id                      String @id  @default(uuid())
+   userId                  String
+   type                    String
+   provider                String
+   providerAccountId       String
+   refresh_token           String?
+   access_token            String?
+   expiresAt               Int?
+   token_type              String?
+   scope                   String?
+   id_token                String?
+   session_state           String?
+   user                    User @relation(fields:[userId], references:[id])
+   @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id                 String  @id  @default(uuid())
+  sessionToken       String @unique
+  userId             String
+  expires            DateTime
+  user               User     @relation(fields:[userId], references:[id])
+}
+
+model VerificationToken {
+  identifier   String
+  token        String  @unique
+  expires      DateTime
+  @@unique([identifier, token])
 }
