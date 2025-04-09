@@ -1,1 +1,6 @@
 TODOs
+
+- make sure all api endpoints are authenticated using sessions
+- prisma operations at all api endpoints
+- render users at beta users for founder
+- frontend (from scratch)
