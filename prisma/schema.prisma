@@ -8,63 +8,31 @@ datasource db {
 }
 
 model User {
-  id              String  @id @default(uuid())
-  name            String?
+  id              String    @id   @default(cuid())
   email           String?  @unique
-  emailVerified   DateTime?
-  startups        Startup[]
-  accounts        Account[]
-  sessions        Session[]
-  createdAt       DateTime  @default(now())
+  provider        Provider
+  startups        Startup[]   
+}
+
+enum Provider {
+  Google
 }
 
 model Startup {
-  id              String  @id @default(uuid())
+  id              String  @id @default(cuid())
   userId          String
-  User            User @relation(fields: [userId], references: [id])
+  User            User    @relation(fields: [userId], references: [id])
   startupName     String
   slug            String  @unique
-  betaUsers            BetaUser[]
+  betaUsers       BetaUser[]
 }
 
 model BetaUser {
-   id              String  @id @default(uuid())
+   id              String  @id @default(cuid())  
    username        String
    email           String  @unique
    whyInterested   String
    submittedAt     DateTime @default(now())
    startup         Startup @relation(fields:[startupId], references:[id])
    startupId       String
-}
-
-model Account {
-   id                      String @id  @default(uuid())
-   userId                  String
-   type                    String
-   provider                String
-   providerAccountId       String
-   refresh_token           String?
-   access_token            String?
-   expiresAt               Int?
-   token_type              String?
-   scope                   String?
-   id_token                String?
-   session_state           String?
-   user                    User @relation(fields:[userId], references:[id])
-   @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id                 String  @id  @default(uuid())
-  sessionToken       String @unique
-  userId             String
-  expires            DateTime
-  user               User     @relation(fields:[userId], references:[id])
-}
-
-model VerificationToken {
-  identifier   String
-  token        String  @unique
-  expires      DateTime
-  @@unique([identifier, token])
 }
