@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { z } from 'zod'
+import { prismaClient} from '@/lib/db' 
 
 const userSchema = z.object({
     name: z.string().min(1),
@@ -7,19 +8,39 @@ const userSchema = z.object({
     intent: z.string().min(5)
 })
 
-export async function POST (req: NextRequest) {   
+export async function POST (req: NextRequest, { params }: { params: { joinCode: string } }) {   
    try { 
     const body = await req.json()  
     const name = body.name;
-    const email = body.email
-    const intent = body.email
+    const email = body.email;
+    const intent = body.intent;
+    const joinCode = params.joinCode; 
 
     const validate = userSchema.safeParse({
         name, email, intent
     })
 
+    const startupCode = await prismaClient.startup.findUnique({
+        where: {joinCode: joinCode}
+    })
+
+    if(!startupCode) {
+        return NextResponse.json({
+            messagge: "expired or invalid code"
+        },{
+            status: 404
+        })
+    }
+
     if(validate.success) {
-        // store in db
+        await prismaClient.betaUser.create({
+           data: {
+             startupId: startupCode.id, 
+             username: name,
+             email,
+             intent
+           }  
+        })
         return NextResponse.json({
             message: "thank you for joining"
         }, {
