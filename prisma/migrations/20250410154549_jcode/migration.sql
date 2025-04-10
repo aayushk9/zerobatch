@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Startup" ALTER COLUMN "joinCode" DROP NOT NULL,
+ALTER COLUMN "joinCode" DROP DEFAULT;

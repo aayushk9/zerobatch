@@ -10,8 +10,8 @@ datasource db {
 model User {
   id              String    @id   @default(cuid())
   email           String?  @unique
-  provider        Provider
-  startups        Startup[]   
+  startups        Startup[] 
+  provider        Provider  
 }
 
 enum Provider {
@@ -24,14 +24,15 @@ model Startup {
   User            User    @relation(fields: [userId], references: [id])
   startupName     String
   slug            String  @unique
-  betaUsers       BetaUser[]
+  joinCode        String?  @unique 
+  betaUsers       BetaUser[]  
 }
 
 model BetaUser {
    id              String  @id @default(cuid())  
    username        String
    email           String  @unique
-   whyInterested   String
+   intent          String
    submittedAt     DateTime @default(now())
    startup         Startup @relation(fields:[startupId], references:[id])
    startupId       String
