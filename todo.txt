@@ -4,3 +4,11 @@ TODOs
 - prisma operations at all api endpoints
 - render users at beta users for founder
 - frontend (from scratch)
+
+2 THINGS TO CONSIDER
+
+- Attach SESSION ID to FOUNDER when they generate link       (session id comes from auth)
+- Attach SESSION ID to FOUNDER when they request beta users  
+
+-- users are submitting to correct startup? how to VERIFY?
+    GENERATE a slug (unique) and ask user to enter that slug when joining waitlist, add ID to that slug and save startupId as slugID 
