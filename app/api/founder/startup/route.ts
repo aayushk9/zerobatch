@@ -1,9 +1,13 @@
+import { prismaClient } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from 'zod'
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
+import { nanoid } from 'nanoid'
+ 
+const startupNameSchema = z.string().min(1)
 
-const startupNameSchema = z.string()
-
-function generateSlug(startupname: String) {
+function generateSlug(startupname: string) {
   return startupname
     .toLowerCase()
     .trim()
@@ -11,42 +15,67 @@ function generateSlug(startupname: String) {
     .replace(/^-+|-+$/g, '')
 }
 
-// generate unique slug to ensure startup name duplicated are not created
-function uniqueSlug(baseSlug: String) {
+async function uniqueSlug(baseSlug: string) : Promise<string> {
   let slug = baseSlug
+  let count = 1
 
-  // find this slug in db if found increment by 1 and save it in db
-  // else return slug
+  while(true){
+  const existing = await prismaClient.startup.findUnique({
+    where: {slug}
+  })
+
+  if(!existing){
+    return slug
+  }
+  
+  slug = `${baseSlug}-${count}`
+  count++
+}
 }
 
 export async function POST(req: NextRequest) {
+ try {
+  const session = await getServerSession(authOptions)
 
-  try {
+  
+  if(!session?.user.id) {
+    return NextResponse.json({
+      message: "unauthenticated"
+    }, {
+      status: 403
+    })  
+  } 
+
     const body = await req.json(); 
-    const startupName = startupNameSchema.parse(body.startupName)
+    const startupName = body.startupName;
+
+    const validate = startupNameSchema.parse(startupName)
 
     const tempSlug = generateSlug(startupName);
     const slug = await uniqueSlug(tempSlug)
+    const joinCode = nanoid(8)
 
-    return NextResponse.json({
-      slugURL: `https://zerobatch.com/${tempSlug}`
+    await prismaClient.startup.create({
+      data: {
+        userId: session.user.id,
+        startupName,
+        slug,
+        joinCode
+      }
+    })
+    console.log(slug)
+    return NextResponse.json({ 
+      slugURL: `https://zerobatch.com/${slug}/${joinCode}`
     }, {
       status: 200
     }
-    )
+    ) 
   } catch (e) {   
     console.log(e)
     return NextResponse.json({
-      message: "please enter valid startup name"
+      message: "please enter valid data"
     }, {
       status: 411
     })
   }
-}
-
-export function GET(req: NextRequest) {
-  // render nothing as of now (planned)
-  return NextResponse.json({
-    msg: "Testing get request at startup route"
-  })
 }
