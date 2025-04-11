@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
     })
     console.log(slug)
     return NextResponse.json({ 
-      slugURL: `http://localhost:3000/${slug}/${joinCode}` 
+      slugURL: `${process.env.NEXT_SLUG_URL}/${slug}/${joinCode}` 
     }, {
       status: 200
     }

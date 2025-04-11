@@ -23,7 +23,7 @@ export function RenderUsers() {
   const fetchUsers = async () => {
     setLoading(true)
     try {
-      const res = await fetch("http://localhost:3000/api/founder/betauser")
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/founder/betauser`)
       const data = await res.json()
       setStartups(data.formatted)
     } catch (error) {

@@ -35,7 +35,7 @@ export function UserForm() {
     setError("")
 
     try {
-      const res = await fetch(`http://localhost:3000/api/user/${joinCode}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/user/${joinCode}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

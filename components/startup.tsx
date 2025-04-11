@@ -20,7 +20,7 @@ export function Startup() {
 
     setLoading(true)
     try {
-      const res = await fetch("http://localhost:3000/api/founder/startup", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/founder/startup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
