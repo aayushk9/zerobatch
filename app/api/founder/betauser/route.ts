@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { prismaClient } from "@/lib/db"
 
 export async function GET() {
@@ -52,6 +52,7 @@ export async function GET() {
        }));
 
       return NextResponse.json({ formatted }, { status: 200 })
+
    } catch (e) {
       console.log(e)
       return NextResponse.json({
@@ -60,6 +61,4 @@ export async function GET() {
          status: 500
       })
    }
-
-
 }
