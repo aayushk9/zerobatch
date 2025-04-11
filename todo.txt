@@ -11,4 +11,12 @@ TODOs
 - Attach SESSION ID to FOUNDER when they request beta users  
 
 -- users are submitting to correct startup? how to VERIFY?
-    GENERATE a slug (unique) and ask user to enter that slug when joining waitlist, add ID to that slug and save startupId as slugID 
+    GENERATE a slug (unique) and ask user to enter that slug when joining waitlist, add ID to that slug and save startupId (beta user) as slugID
+    
+
+-- FRONTEND PAGES
+
+1. /auth-page 
+2. /dashboard (for generating a link) and button to render beta users    [AUTHENTICATED ROUTE]
+3. /betausers (to render list of users subscribed)   [AUTHENTICATED ROUTE] 
+4. /beta-request (for user)
