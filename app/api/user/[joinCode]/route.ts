@@ -8,11 +8,14 @@ const userSchema = z.object({
     intent: z.string().min(5)
 })
 
-export async function POST(
-    req: NextRequest,
-    { params }: { params: { joinCode: string } }
-  ) {
-    const { joinCode } = params;
+type RouteParams = {
+    params: {
+        joinCode: string;
+    }
+}
+
+export async function POST(req: NextRequest, context: RouteParams) {
+    const  { joinCode } = context.params;
    try { 
     const body = await req.json()  
     const name = body.name;
