@@ -10,9 +10,9 @@ const userSchema = z.object({
 
 export async function POST(
     req: NextRequest,
-    context: { params: { joinCode: string } }
+    { params }: { params: { joinCode: string } }
   ) {
-    const { joinCode } = context.params;
+    const { joinCode } = params;
    try { 
     const body = await req.json()  
     const name = body.name;
