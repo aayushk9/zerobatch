@@ -8,13 +8,16 @@ const userSchema = z.object({
     intent: z.string().min(5)
 })
 
-export async function POST (req: NextRequest, { params }: { params: { joinCode: string } }) {   
+export async function POST(
+    req: NextRequest,
+    context: { params: { joinCode: string } }
+  ) {
+    const { joinCode } = context.params;
    try { 
     const body = await req.json()  
     const name = body.name;
     const email = body.email;
     const intent = body.intent;
-    const joinCode = params.joinCode; 
 
     const validate = userSchema.safeParse({
         name, email, intent
