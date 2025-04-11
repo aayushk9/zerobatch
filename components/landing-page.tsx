@@ -10,7 +10,7 @@ export  function LandingPage() {
     <div className="flex min-h-screen flex-col">
       <header className="container flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 font-bold">
-          <span className="text-xl">zerobatch</span>
+          <span className="text-xl">batch0</span>
         </Link>
       </header>
       <main className="flex-1">
@@ -64,8 +64,7 @@ export  function LandingPage() {
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">How it works</div>
                 <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">For founders, by dev</h2>
                 <p className="text-muted-foreground md:text-xl">
-                  We built the tool we wished we had when launching our own startups. Simple, effective, and no
-                  unnecessary features.
+                Built batch0 for the founders who just shipped their MVP and are already in early access forms. If your notion's a mess or your access list is full, try this.
                 </p>
                 <ul className="grid gap-2">
                   <li className="flex items-center gap-2">
@@ -74,11 +73,11 @@ export  function LandingPage() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="h-5 w-5 text-primary" />
-                    <span>Generate a unique signup link for your startup</span>
+                    <span>Generate a unique link for your startup</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="h-5 w-5 text-primary" />
-                    <span>Share on X, LinkedIn, or anywhere else</span>
+                    <span>Share on X, LinkedIn or anywhere else</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="h-5 w-5 text-primary" />
