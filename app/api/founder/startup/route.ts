@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
     })
     console.log(slug)
     return NextResponse.json({ 
-      slugURL: `https://zerobatch.com/${slug}/${joinCode}`
+      slugURL: `http://localhost:3000/${slug}/${joinCode}` 
     }, {
       status: 200
     }
